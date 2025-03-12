@@ -33,7 +33,7 @@ This project provides a customized Docker image based on `php:8.2-fpm` with inst
 ```bash
 git clone <repository-url>
 cd <repository-name>
-
+```
 2. Configure Environment Variables
 Create a .env file in the root directory and add the following variables:
 
@@ -51,7 +51,7 @@ DB_NAME=development
 3. Build and Run Containers
 ```bash
 docker-compose up -d --build
-
+```
 -d - runs in the background
 
 --build - rebuilds images if necessary
@@ -59,7 +59,7 @@ docker-compose up -d --build
 4. Check Status
 ```bash
 docker ps
-
+```
 You should see two running containers: php_app and mysql-server.
 
 5. Access the Application
@@ -75,14 +75,15 @@ docker-compose down
 View PHP logs:
 ```bash
 docker logs php_app
-
+```
 Access the PHP container:
 ```bash
 docker exec -it php_app bash
-
+```
 Connect to MySQL:
 ```bash
 docker exec -it mysql-server mysql -u root -p
+```
 OR
 Open http://localhost:8080 in your browser.
 
@@ -92,7 +93,7 @@ If you encounter mysqli_sql_exception: No such file or directory:
 Ensure the MySQL container is running:
 ```bash
 docker ps
-
+```
 Verify the environment variables in .env.
 
 Ensure your PHP code uses the correct connection parameters:
@@ -106,7 +107,7 @@ To add a web server (e.g., Nginx), include the corresponding service in docker-c
 Customize php.ini inside the container if needed:
 ```bash
 docker cp custom-php.ini php_app:/usr/local/etc/php/php.ini
-
+```
 License
 This project is distributed under the MIT License (or specify your own license).
 
