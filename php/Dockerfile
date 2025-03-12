@@ -1,14 +1,32 @@
-FROM php:8.2-fpm
+# Базовый образ с Apache и PHP 8
+FROM php:8.0-apache
 
-# Install dependencies
+# Установка необходимых расширений PHP и утилит
 RUN apt-get update && apt-get install -y \
     libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd mysqli
+    libjpeg-dev \
+    libfreetype6-dev \
+    libzip-dev \
+    unzip \
+	sendmail \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+    pdo \
+    pdo_mysql \
+    mysqli \
+    gd \
+    zip \
+    && a2enmod rewrite
 
-# Copy PHP configuration
-COPY php.ini /usr/local/etc/php/
+# Копирование конфигурации Apache (опционально)
+COPY ./apache-config.conf /etc/apache2/sites-available/000-default.conf
 
-# Copy application code
-COPY . /var/www/html
+# Установка рабочей директории
+WORKDIR /var/www/html
+
+# Права доступа
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod 755 /var/www/html
+
+# Открываем порт
+EXPOSE 80
